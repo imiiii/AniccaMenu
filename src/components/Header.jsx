@@ -1,5 +1,7 @@
 // Header component - لوگو از public/images/logo.png نمایش داده می‌شود
 // می‌توانید مسیر لوگو را با prop logoPath تغییر دهید
+import LanguageSwitcher from './LanguageSwitcher';
+
 const Header = ({ logoPath = "/images/logo.png" }) => {
   // Use Vite's base URL for GitHub Pages compatibility
   const baseUrl = import.meta.env.BASE_URL;
@@ -8,7 +10,8 @@ const Header = ({ logoPath = "/images/logo.png" }) => {
     : `${baseUrl}${logoPath}`;
   
   return (
-    <header className="bg-gradient-to-b from-terracotta/20 to-sand-beige py-6 md:py-8 px-4 text-center fade-in">
+    <header className="bg-gradient-to-b from-terracotta/20 to-sand-beige py-6 md:py-8 px-4 text-center fade-in relative">
+      <LanguageSwitcher />
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center justify-center w-full">
           {/* Logo Image */}

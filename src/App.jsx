@@ -11,7 +11,6 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-sand-beige">
-      <LanguageSwitcher />
       <Header />
       
       <main className="pb-12">
