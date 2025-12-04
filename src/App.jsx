@@ -1,48 +1,48 @@
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import Header from './components/Header';
 import CategorySection from './components/CategorySection';
 import QRCode from './components/QRCode';
-import { menuData } from './data/menu';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { translations } from './data/translations';
 
-function App() {
+function AppContent() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   return (
     <div className="min-h-screen bg-sand-beige">
+      <LanguageSwitcher />
       <Header />
       
       <main className="pb-12">
-        {/* صبحانه - Breakfast */}
         <CategorySection 
-          title="صبحانه" 
-          items={menuData.breakfast} 
+          title={t.categories.breakfast} 
+          items={t.menu.breakfast} 
         />
         
-        {/* ناهار / شام - Lunch/Dinner */}
         <CategorySection 
-          title="ناهار / شام" 
-          items={menuData.lunchDinner} 
+          title={t.categories.lunchDinner} 
+          items={t.menu.lunchDinner} 
         />
         
-        {/* بار گرم - Hot Bar */}
         <CategorySection 
-          title="بار گرم" 
-          items={menuData.hotBar} 
+          title={t.categories.hotBar} 
+          items={t.menu.hotBar} 
         />
         
-        {/* بار سرد - Cold Bar */}
         <CategorySection 
-          title="بار سرد" 
-          items={menuData.coldBar} 
+          title={t.categories.coldBar} 
+          items={t.menu.coldBar} 
         />
         
-        {/* بشقاب‌ها - Plates */}
         <CategorySection 
-          title="بشقاب‌ها" 
-          items={menuData.plates} 
+          title={t.categories.plates} 
+          items={t.menu.plates} 
         />
         
-        {/* خدمات تفریحی - Recreational Services */}
         <CategorySection 
-          title="خدمات تفریحی" 
-          items={menuData.paddleBoard} 
+          title={t.categories.paddleBoard} 
+          items={t.menu.paddleBoard} 
         />
       </main>
       
@@ -58,6 +58,14 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

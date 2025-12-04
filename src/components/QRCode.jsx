@@ -1,7 +1,11 @@
 import { useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../data/translations';
 
 const QRCode = ({ url, size = 200 }) => {
+  const { language } = useLanguage();
+  const t = translations[language];
   const qrRef = useRef(null);
 
   const downloadQRCode = () => {
@@ -63,7 +67,7 @@ const QRCode = ({ url, size = 200 }) => {
         onClick={downloadQRCode}
         className="mt-4 px-6 py-2 bg-terracotta text-white rounded-lg hover:bg-terracotta/90 transition-colors font-medium"
       >
-        Download QR Code
+        {t.ui.downloadQR}
       </button>
     </div>
   );
