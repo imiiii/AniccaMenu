@@ -9,7 +9,11 @@ const QRCode = ({ url, size = 200 }) => {
   const qrRef = useRef(null);
 
   const downloadQRCode = () => {
-    const svg = qrRef.current;
+    // Find the SVG element inside the ref
+    const container = qrRef.current;
+    if (!container) return;
+    
+    const svg = container.querySelector('svg');
     if (!svg) return;
 
     // Get SVG as string
@@ -19,34 +23,51 @@ const QRCode = ({ url, size = 200 }) => {
 
     // Create image from SVG
     const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
     img.onload = () => {
-      // Create canvas
-      const canvas = document.createElement('canvas');
-      canvas.width = size + 40; // Add padding
-      canvas.height = size + 40;
-      const ctx = canvas.getContext('2d');
-      
-      // Fill white background
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw QR code
-      ctx.drawImage(img, 20, 20, size, size);
-      
-      // Convert to PNG and download
-      canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'qrcode-menu.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 'image/png');
+      try {
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        const padding = 40;
+        canvas.width = size + padding;
+        canvas.height = size + padding;
+        const ctx = canvas.getContext('2d');
+        
+        // Fill white background
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw QR code
+        ctx.drawImage(img, padding / 2, padding / 2, size, size);
+        
+        // Convert to PNG and download
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            console.error('Failed to create blob');
+            return;
+          }
+          const downloadUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = 'qrcode-menu.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(downloadUrl);
+        }, 'image/png');
+      } catch (error) {
+        console.error('Error creating image:', error);
+      }
       
       URL.revokeObjectURL(svgUrl);
     };
+    
+    img.onerror = (error) => {
+      console.error('Error loading image:', error);
+      URL.revokeObjectURL(svgUrl);
+    };
+    
     img.src = svgUrl;
   };
 
