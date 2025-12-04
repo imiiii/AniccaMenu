@@ -1,5 +1,6 @@
 import Header from './components/Header';
 import CategorySection from './components/CategorySection';
+import QRCode from './components/QRCode';
 import { menuData } from './data/menu';
 
 function App() {
@@ -46,7 +47,15 @@ function App() {
       </main>
       
       <footer className="bg-terracotta/10 py-6 text-center text-gray-600">
-        <p className="text-sm">ANICCA</p>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-4">
+            <QRCode 
+              url={window.location.href} 
+              size={150}
+            />
+          </div>
+          <p className="text-sm">ANICCA</p>
+        </div>
       </footer>
     </div>
   );
